@@ -1,1 +1,31 @@
-Full Stack Assignment
+/*
+git clone https://github.com/your-repository/frontend.git
+
+npm install
+ng serve
+
+
+Features:
+  Authentication: Login and registration with form validation.
+  Password Reset: Secure reset password functionality.
+  Role-based UI: Dynamic UI rendering based on user roles.
+  Responsive Design: Built with Bootstrap for mobile-first responsiveness.
+
+Technology Stack Used:
+  Framework: Angular (v18.2.12)
+  CSS Framework: Bootstrap (v5.x)
+  State Management: Angular Services
+  HTTP Communication: Angular HTTPClient for API integration
+  Followed RESTFULL Api Method
+
+Folder Structure:
+  src/app
+  components/: Contains all reusable components (e.g., login, register, dashboard).
+  services/: Contains shared services for API communication and authentication.
+
+
+
+
+
+
+*/
