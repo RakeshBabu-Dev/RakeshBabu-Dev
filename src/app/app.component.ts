@@ -14,6 +14,5 @@ import { CommonModule } from '@angular/common';
 })
 export class AppComponent {
   ngOnInit(): void {
-    console.log("WORKING");
   }
 }

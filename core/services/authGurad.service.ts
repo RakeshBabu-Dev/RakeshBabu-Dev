@@ -14,17 +14,14 @@ export class AuthGuard implements CanActivate {
     // Check if the route allows public access
     const allowPublic = route.data['allowPublic'];
     if (allowPublic) {
-      console.log('AuthGuard - Public access allowed for this route.');
       return true;
     }
 
     // Check if user is authenticated
     const isAuthenticated = this.checkIfAuthenticated();
     if (isAuthenticated) {
-      console.log('AuthGuard - Authenticated, access granted.');
       return true;
     } else {
-      console.log('AuthGuard - Not authenticated, redirecting to /login.');
       this.router.navigate(['/login']);
       return false;
     }

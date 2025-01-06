@@ -42,7 +42,6 @@ export class DashboardComponent implements OnInit {
     const cred = localStorage.getItem('credential')!;
     const par = JSON.parse(cred)
     this.currentUserId = par.id
-    console.log(par,'CRE');
 
     this.isAuthenticated = !!token; // Check if token exists
     this.getDashboardDetails();
@@ -53,7 +52,6 @@ export class DashboardComponent implements OnInit {
       this.dashboardService.dashboardDetails().subscribe(
         (data) => {
           this.dashboardData = data.message;
-          console.log('Dashboard Data:', this.dashboardData);
         },
         (error) => {
           console.error('Error fetching dashboard data:', error);
