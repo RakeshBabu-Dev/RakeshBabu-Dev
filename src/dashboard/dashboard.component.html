@@ -1,0 +1,195 @@
+<div class="container mt-4">
+  <!-- Nav Pills -->
+  <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+    <li class="nav-item" role="presentation">
+      <a class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" href="#pills-home" role="tab"
+        aria-controls="pills-home" aria-selected="true">Home</a>
+    </li>
+    <li *ngIf="!isAuthenticated" class="nav-item ms-2" role="presentation">
+      <a class="nav-link pointer" id="pills-login-tab" data-bs-toggle="pill" (click)="routeToLogin()"
+        routerLinkActive="router-link-active" role="tab" aria-controls="pills-home" aria-selected="false">Login</a>
+    </li>
+    <li *ngIf="isAuthenticated && user == 1" class="nav-item" role="presentation">
+      <a class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" href="#pills-profile" role="tab"
+        aria-controls="pills-profile" aria-selected="false">Users Management</a>
+    </li>
+    <li *ngIf="isAuthenticated" class="nav-item" role="presentation">
+      <a class="nav-link" id="pills-password-tab" data-bs-toggle="pill" href="#pills-password" role="tab"
+        aria-controls="pills-password" aria-selected="false">Password Reset</a>
+    </li>
+    <li *ngIf="isAuthenticated" class="nav-item ms-2" role="presentation">
+      <!-- Power Icon for Logout -->
+      <a class="nav-link pointer" (click)="logout()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-power"
+          viewBox="0 0 16 16">
+          <path d="M8 3a5 5 0 1 0 5 5h-1a4 4 0 1 1-4-4V3z" />
+          <path d="M7.5 0a.5.5 0 0 1 .5.5v5h-1V.5a.5.5 0 0 1 .5-.5z" />
+        </svg>
+      </a>
+    </li>
+  </ul>
+
+  <!-- Tab content -->
+  <div class="tab-content" id="pills-tabContent">
+    <!-- Home Tab -->
+    <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+      <div *ngIf="!isAuthenticated">
+        <h4>Public Content</h4>
+        <p>Welcome Public Users</p>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="card">
+              <div class="card-header">Public Content 1</div>
+              <div class="card-body">
+                <p>Public content is content that is accessible to the general public or a specific group.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card">
+              <div class="card-header">Public Content 2</div>
+              <div class="card-body">
+                <p>Public content is content that is accessible to the general public or a specific group.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Employee Dashboard -->
+      <div *ngIf="isAuthenticated && user == 2">
+        <h4>Welcome, Employee</h4>
+        <p>Manage your account below.</p>
+
+        <!-- Reset Password Section -->
+
+      </div>
+      <!-- Admin Dashboard -->
+      <div *ngIf="isAuthenticated && user == 1">
+        <h4>Welcome, Admin</h4>
+        <p>Manage your account below.</p>
+      </div>
+    </div>
+
+    <!-- Users Management Tab -->
+    <div *ngIf="user == 1" class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+      <div class="row mt-4">
+        <div class="col-md-12">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Status</th>
+                <th scope="col">User Type</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of dashboardData">
+                <td>{{ item.name }}</td>
+                <td>{{ item.email }}</td>
+                <td>
+                  <label class="switch">
+                    <input type="checkbox" [(ngModel)]="item.status" (change)="onStatusChange(item)" />
+                    <span class="slider"></span>
+                  </label>
+                </td>
+                <td>
+                  <span
+                    class="badge"
+                    [ngClass]="{
+                      'text-bg-primary': item.user_type == 1,
+                      'text-bg-success': item.user_type == 2,
+                      'text-bg-warning': item.user_type == 3
+                    }"
+                  >
+                    {{ item.user_type == 1 ? 'Admin' : item.user_type == 2 ? 'Employee' : 'Public' }}
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <!-- Reset Password -->
+    <div class="tab-pane fade" id="pills-password" role="tabpanel" aria-labelledby="pills-password-tab">
+      <div *ngIf="isAuthenticated" class="reset-password-container mt-4">
+        <h5>Reset Password</h5>
+        <form [formGroup]="resetPasswordForm" (ngSubmit)="onResetPassword()">
+          <!-- Current Password -->
+          <div class="form-group mb-3">
+            <label for="currentPassword">Current Password</label>
+            <input
+              type="password"
+              id="currentPassword"
+              formControlName="currentPassword"
+              class="form-control"
+              placeholder="Enter current password"
+            />
+            <div
+              *ngIf="
+                resetPasswordForm.get('currentPassword')!.touched &&
+                resetPasswordForm.get('currentPassword')!.invalid
+              "
+              class="text-danger"
+            >
+              <small>Current password is required.</small>
+            </div>
+          </div>
+
+          <!-- New Password -->
+          <div class="form-group mb-3">
+            <label for="newPassword">New Password</label>
+            <input
+              type="password"
+              id="newPassword"
+              formControlName="newPassword"
+              class="form-control"
+              placeholder="Enter new password"
+            />
+            <div
+              *ngIf="
+                resetPasswordForm.get('newPassword')!.touched && resetPasswordForm.get('newPassword')!.invalid
+              "
+              class="text-danger"
+            >
+              <small *ngIf="resetPasswordForm.get('newPassword')!.errors?.['required']">New password is required.</small>
+              <small *ngIf="resetPasswordForm.get('newPassword')!.errors?.['minlength']">
+                Password must be at least 6 characters long.
+              </small>
+            </div>
+          </div>
+
+          <!-- Confirm Password -->
+          <div class="form-group mb-3">
+            <label for="confirmPassword">Confirm Password</label>
+            <input
+              type="password"
+              id="confirmPassword"
+              formControlName="confirmPassword"
+              class="form-control"
+              placeholder="Confirm new password"
+            />
+            <div
+              *ngIf="
+                resetPasswordForm.get('confirmPassword')!.touched &&
+                resetPasswordForm.get('confirmPassword')!.invalid
+              "
+              class="text-danger"
+            >
+              <small>Confirmation password is required.</small>
+              <small *ngIf="!doPasswordsMatch">Passwords do not match.</small>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" class="btn btn-primary" [disabled]="resetPasswordForm.invalid">
+            Reset Password
+          </button>
+        </form>
+        <div *ngIf="successMessage" class="text-success mt-3">{{ successMessage }}</div>
+        <div *ngIf="errorMessage" class="text-danger mt-3">{{ errorMessage }}</div>
+      </div>
+    </div>
+  </div>
+</div>
